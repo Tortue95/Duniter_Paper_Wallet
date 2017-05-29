@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Duniter Paper Wallet Generator</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css">
+	<script src="lib/qrcode.js"></script>
+	<script src="lib/duniter_tools.js"></script>
+	<script src="lib/random.js"></script>
+</head>
+<body>
+	<div>
+		<div class="wrapper">
+
+
+			<header class="header noprint">
+				<p class="htitle">Duniter Paper Wallet</p>
+				<p class="htitle2">Generator</p>
+			</header><!-- .header-->
+
+			<main class="content">
+				<div class="btn_col noprint">
+					<div class="btn_col_g">
+						<div id="BtnGenerateWIF" class="ButtonGenerate">Generate Wallet</div>
+					</div>
+					<div class="btn_col_g">
+						<div id="BtnGetPasswordEWIF" class="ButtonGenerate">Generate Encrypted Wallet</div>
+					</div>
+				</div>
+
+				<div class="info_col noprint" id="info_col">
+					<div class="info_col_title">
+						Intructions (best practice):
+				  </div>
+					<div class="info_col_g">
+						<div class="info_text">
+							1 - Download this HTML page on github <a target="_blank" href="https://github.com/Tortue95/Duniter_Paper_Wallet">Here</a>.<br/><br/>
+							2 - Put the HTML page on USB key.<br/><br/>
+							3 - Boot your pc on linux live distribution.<br/><br/>
+						</div>
+					</div>
+					<div class="info_col_g">
+						<div class="info_text">
+							4 - Remove all network connexion.<br/><br/>
+							5 - Open a HTML file from the usbkey.<br/><br/>
+							6 - Generate and Print multiple paper wallet.<br/><br/>
+						</div>
+					</div>
+
+				</div>
+
+				<div id="paperwalletdiv" class="paperwalletdiv">
+					<img id="paperarea" class="paperwalletdiv">
+					<div id="PublicKey" class="PublicKey"></div>
+					<div id="PublicKeyRevert" class="PublicKeyRevert"></div>
+					<div id="PrivateKey" class="PrivateKey"></div>
+					<div id="PrivateKeyRevert" class="PrivateKeyRevert"></div>
+					<div id="PublicQRCode" class="qrcodePublic"></div>
+					<div id="PrivateQRCode" class="qrcodePrivate"></div>
+				</div>
+			</main><!-- .content -->
+
+			<footer class="footer noprint">
+				<div class="footer_text">
+					<p>Created By Tortue<br>Donation to:
+						<a target="_blank" href="https://g1.duniter.fr/#/app/transfer/Com8rJukCozHZyFao6AheSsfDQdPApxQRnz7QYFf64mm?comment=Donation_Paper_Wallet">Com8rJukCozHZyFao6AheSsfDQdPApxQRnz7QYFf64mm</a>
+					</p><br/>
+					<p>More information on <a target="_blank" href="https://github.com/Tortue95/Duniter_Paper_Wallet">GitHub</a></p>
+				</div>
+			</footer><!-- .footer -->
+
+		</div><!-- .wrapper -->
+	</div>
+	<!-- The Modal password-->
+	<div id="ModalPassword" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <span class="close">&times;</span>
+		      Encrypted Wallet
+		    </div>
+		    <div class="modal-body">
+		      <p>Please enter password:</p>
+		      <input type="password" name="ewifpwd" value="" id="ewifpwd" class="Input-Password"/><br>
+					<div id="BtnGenerateEWIF" class="ButtonGenerate">Generate Encrypted Wallet</div>
+		    </div>
+		  </div>
+
+	</div>
+
+</body>
+<script>
+
+GenerateWif();
+var BtnGenerateWIF = document.getElementById("BtnGenerateWIF");
+var BtnGetPasswordEWIF = document.getElementById("BtnGetPasswordEWIF");
+var BtnGenerateEWIF = document.getElementById("BtnGenerateEWIF");
+
+
+BtnGenerateWIF.onclick = function() {
+		GenerateWif();
+}
+var modal = document.getElementById('ModalPassword');
+var span = document.getElementsByClassName("close")[0];
+BtnGetPasswordEWIF.onclick = function() {
+    modal.style.display = "block";
+}
+span.onclick = function() {
+    modal.style.display = "none";
+}
+BtnGenerateEWIF.onclick = function() {
+    modal.style.display = "none";
+		GenerateEWif();
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+function GenerateWif(){
+	var entropy = Generate_Entropy(5000);
+	var seed = generate_seed_from_entropy(entropy);
+
+
+	var PublicKey = publickey_from_seed(seed);
+	var wif = wif_v1_from_seed(seed);
+
+
+	//Add info in page
+	document.getElementById("PublicKey").innerHTML = PublicKey;
+	document.getElementById("PublicKeyRevert").innerHTML = PublicKey;
+	document.getElementById("PrivateKey").innerHTML = wif;
+	document.getElementById("PrivateKeyRevert").innerHTML = wif;
+
+	document.getElementById("PublicQRCode") .innerHTML = "";
+	document.getElementById("PrivateQRCode") .innerHTML = "";
+	new QRCode(document.getElementById("PublicQRCode"), {
+		text: PublicKey,
+		width: 118,
+		height: 121,
+	});
+	new QRCode(document.getElementById("PrivateQRCode"),  {
+		text: wif,
+		width: 118,
+		height: 121,
+	});
+
+	document.getElementById('info_col').style.display  = 'none';
+
+	document.getElementById("paperarea").src = "paperwallet.jpg"
+	document.getElementById('paperwalletdiv').style.display = 'block';
+	document.getElementById('PublicKey').style.display = 'block';
+	document.getElementById('PublicKeyRevert').style.display = 'block';
+	document.getElementById('PrivateKey').style.display = 'block';
+	document.getElementById('PrivateKeyRevert').style.display = 'block';
+	document.getElementById('PublicQRCode').style.display = 'block';
+	document.getElementById('PrivateQRCode').style.display = 'block';
+
+}
+
+
+function GenerateEWif(){
+	passwd = document.getElementById('ewifpwd').value;
+
+	var entropy = Generate_Entropy(5000);
+	var seed = generate_seed_from_entropy(entropy);
+
+	/*var seed;
+	nacl_factory.instantiate(function (nacl) {
+		seed = nacl.from_hex("5051978f09e6a04536df0cb78224dcdace613bd4bf1de508fa61c207c43e00a2");
+	});	*/
+
+
+	var PublicKey = publickey_from_seed(seed);
+	var ewif = ewif_v1_from_seed(seed,passwd);
+
+
+	//Add info in page
+	document.getElementById("PublicKey").innerHTML = PublicKey;
+	document.getElementById("PublicKeyRevert").innerHTML = PublicKey;
+	document.getElementById("PrivateKey").innerHTML = ewif;
+	document.getElementById("PrivateKeyRevert").innerHTML = ewif;
+
+	document.getElementById("PublicQRCode") .innerHTML = "";
+	document.getElementById("PrivateQRCode") .innerHTML = "";
+	new QRCode(document.getElementById("PublicQRCode"), {
+		text: PublicKey,
+		width: 118,
+		height: 121,
+	});
+	new QRCode(document.getElementById("PrivateQRCode"),  {
+		text: ewif,
+		width: 118,
+		height: 121,
+	});
+
+	document.getElementById('info_col').style.display  = 'none';
+
+	document.getElementById("paperarea").src = "EWIFpaperwallet.jpg"
+	document.getElementById('paperwalletdiv').style.display = 'block';
+	document.getElementById('PublicKey').style.display = 'block';
+	document.getElementById('PublicKeyRevert').style.display = 'block';
+	document.getElementById('PrivateKey').style.display = 'block';
+	document.getElementById('PrivateKeyRevert').style.display = 'block';
+	document.getElementById('PublicQRCode').style.display = 'block';
+	document.getElementById('PrivateQRCode').style.display = 'block';
+}
+
+
+document.getElementById('paperwalletdiv').style.display = 'none';
+document.getElementById('info_col').style.display  = 'block';
+
+</script>
+</html>

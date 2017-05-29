@@ -1,0 +1,401 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* End of Eric Meyer's CSS Reset */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+	display: block;
+}
+body {
+	font: 12px/18px Arial, sans-serif;
+	width: 100%;
+}
+.wrapper {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+
+/* Header
+-----------------------------------------------------------------------------*/
+.header {
+	height: 100px;
+	background: #01356f;
+}
+
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.content {
+}
+
+/* Footer
+-----------------------------------------------------------------------------*/
+.footer {
+	height: 100px;
+	background: #01356f;
+}
+
+.footer_text {
+	padding-top: 10px;
+	color:#CCCCCC;
+	text-align:center;
+
+}
+
+.footer_text a {
+	color:#CCCCCC;
+}
+
+.htitle
+{
+text-shadow:1px 1px 1px rgba(NaN,NaN,NaN,1);
+font-weight:bold;
+font-variant:small-caps;
+color:#FFFFFF;
+letter-spacing:0pt;
+word-spacing:1pt;
+font-size:32px;
+text-align:left;
+font-family:times new roman, times, serif;
+line-height:1;margin:0px;
+padding-top: 20px;
+padding-left: 50px;
+}
+
+.htitle2
+{
+font-weight:bold;
+text-decoration:underline;
+font-style:oblique;
+font-variant:small-caps;
+color:#FFFFFF;
+letter-spacing:10pt;
+word-spacing:1pt;
+font-size:21px;
+text-align:left;
+font-family:times new roman, times, serif;
+line-height:1;
+margin:0px;
+padding:0px;
+padding-left: 100px;
+}
+
+.btn_col {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	float:none;
+	height: 50px;
+}
+
+.btn_col_g {
+	width:50%;
+	float:left;
+	text-align: center;
+}
+
+.btn_col_d {
+	width:50%;
+	float:left;
+	text-align: center;
+}
+
+.ButtonGenerate {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	box-shadow:inset 0px 1px 0px 0px #bee2f9;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #63b8ee), color-stop(1, #468ccf));
+	background:-moz-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background:-webkit-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background:-o-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background:-ms-linear-gradient(top, #63b8ee 5%, #468ccf 100%);
+	background:linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#63b8ee', endColorstr='#468ccf',GradientType=0);
+	background-color:#63b8ee;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #3866a3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:18px;
+	font-weight:bold;
+	padding:13px 29px;
+	text-decoration:none;
+	text-shadow:2px 2px 5px #1a1a1a;
+}
+.ButtonGenerate:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #468ccf), color-stop(1, #63b8ee));
+	background:-moz-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+	background:-webkit-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+	background:-o-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+	background:-ms-linear-gradient(top, #468ccf 5%, #63b8ee 100%);
+	background:linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#468ccf', endColorstr='#63b8ee',GradientType=0);
+	background-color:#468ccf;
+}
+.ButtonGenerate:active {
+	position:relative;
+	top:1px;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 400px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+		text-align: center;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #2c5477;
+    color: white;
+		text-align: left;
+		font-weight: bold;
+}
+
+.modal-body {padding: 2px 16px;}
+
+
+
+
+.Input-Password {
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 4px;
+  border: 1px solid #b7b7b7;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  font: class="support css-value">normal normal bold 16px/normal "Times New Roman", Times, serif;
+  color: rgba(0,142,198,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  background: #f9fbfc;
+  -webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+	margin: 10px;
+}
+
+
+
+.info_col {
+	padding-top: 61px;
+	padding-bottom: 15px;
+	float:none;
+	width: 100%;
+	height: 255px;
+}
+
+.info_col_title {
+	padding-left: 100px;
+	padding-bottom: 25px;
+	font-weight:bold;text-decoration:underline;font-style:italic;font-variant:small-caps;color:#000000;letter-spacing:1pt;word-spacing:2pt;font-size:26px;text-align:left;font-family:times new roman, times, serif;line-height:1;
+}
+
+.info_col_g {
+	width:50%;
+	float:left;
+}
+
+.info_col_d {
+	width:50%;
+	float:left;
+}
+
+.info_text {
+	padding-left: 100px;
+	font-size:18px;
+}
+
+
+@font-face {
+			font-family: 'ubuntu_mono_bold';
+			src: url('images/ubuntumono-b-webfont.eot');
+			src: url('images/ubuntumono-b-webfont.eot?#iefix') format('embedded-opentype'),
+				 url('images/ubuntumono-b-webfont.woff') format('woff'),
+				 url('images/ubuntumono-b-webfont.ttf') format('truetype'),
+				 url('images/ubuntumono-b-webfont.svg#ubuntu_monobold') format('svg');
+			font-weight: bold;
+			font-style: normal;
+		}
+
+
+.paperwalletdiv {
+	position: relative;
+    width: 1010px;
+    height: 331px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    left: 0;
+}
+
+.qrcodePublic {
+   position: absolute;
+   top: 104px;
+   left: 63px;
+}
+
+
+.qrcodePrivate {
+   position: absolute;
+   top: 104px;
+   left: 834px;
+}
+
+.PublicKey {
+   font-family: ubuntu_mono_bold, Arial, Helvetica, sans-serif;
+   position: absolute;
+   top: 270px;
+   left: 27px;
+   color: #ffffff;
+   font-size: 13px;
+   width: 320px;
+   height: 15px;
+   text-align: center;
+   -webkit-print-color-adjust: exact;
+}
+
+.PublicKeyRevert {
+   font-family: ubuntu_mono_bold, Arial, Helvetica, sans-serif;
+   position: absolute;
+   top: 45px;
+   left: 27px;
+   color: #ffffff;
+   font-size: 13px;
+   width: 320px;
+   height: 15px;
+   text-align: center;
+   transform: rotate(-180deg);
+   -webkit-print-color-adjust: exact;
+}
+
+.PrivateKey {
+   font-family: ubuntu_mono_bold, Arial, Helvetica, sans-serif;
+   position: absolute;
+   top: 242px;
+   left: 605px;
+   color: #000000;
+   font-size: 14px;
+   width: 375px;
+   height: 15px;
+   text-align: center;
+   vertical-align: middle;
+}
+
+.PrivateKeyRevert {
+   font-family: ubuntu_mono_bold, Arial, Helvetica, sans-serif;
+   position: absolute;
+   top: 74px;
+   left: 605px;
+   color: #000000;
+   font-size: 14px;
+   width: 375px;
+   height: 15px;
+   text-align: center;
+   vertical-align: middle;
+   transform: rotate(-180deg);
+}
+
+@media print {
+	.noprint {display:none;}
+  .PublicKey { color: #white !important; }
+	.PublicKeyRevert { color: #white !important; }
+}
