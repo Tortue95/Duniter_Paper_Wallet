@@ -1,9 +1,9 @@
 # Authentication on Duniter
- 
+
  To be authenticated on one account on duniter, the couple Secret Key / Public Key is needed
- 
+
 ## Introduction
- 
+
 DUP only deals with public keys and signatures.
 A public key is always paired with a private key, which DUP will never deal with.
 
@@ -47,7 +47,7 @@ How is calculated the checksum:
    4. We take only the 3 first characters of this value to get the checksum
         `KAv`
 
-        
+
 ## Key Generation:
 
 ### Key Generation with Password and Salt (Brain wallet)
@@ -102,11 +102,11 @@ For this we need to define a Secret key Prefixes Identifier for supporting diffe
 All Secret key format have 1 Byte for prefixes at the front of the Secret key to identify the type of import used
 And X bytes at the end for the checksum (if used)
 
-|      Secret Key Format             | Identifier |                  SecretKey or Seed                |   Checksum | 
-| ----------------------------------------------- |---------------------------------------------------| ----------:| 
-| ** WIF  v1 ** (without Encryption) |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes | 
-| ** EWIF v1 ** (with Encryption)    |       0x01 | salt + encryptedhalf1 + encryptedhalf2 (36 Bytes) |    2 Bytes |
-| ** Used for future **              |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes | 
+|      Secret Key Format           | Identifier |                  SecretKey or Seed                |   Checksum |
+|----------------------------------|------------|---------------------------------------------------|-----------:|
+| **WIF  v1** (without Encryption) |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes |
+| **EWIF v1** (with Encryption)    |       0x01 | salt + encryptedhalf1 + encryptedhalf2 (36 Bytes) |    2 Bytes |
+| **Used for future**              |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes |
 
 The output of all Secret Key Format is always converted on base58.
 
@@ -114,13 +114,13 @@ Note: With this identifier, we can use later a different algorithm, if the ed255
 when DUP are able to manage multiples digital signature algorithms.
 
 
-###WIF v1 - Wallet Import Format - version 1
+### WIF v1 - Wallet Import Format - version 1
 
 the randomly generated Seed is used for  WIF v1 (32 bytes)
 
-|      Secret Key Format           | Identifier |                  SecretKey or Seed                |   Checksum | 
-| --------------------------------------------- |---------------------------------------------------| ----------:| 
-| **WIF  v1** (without Encryption) |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes | 
+|      Secret Key Format             | Identifier |                  SecretKey or Seed                |   Checksum |
+|------------------------------------|------------|---------------------------------------------------|-----------:|
+| **WIF  v1** (without Encryption)   |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes |
 
 ###### Ex:
 For this type of Private Key Format the identifier is:
@@ -147,11 +147,11 @@ And is converted on base58:
    4. the checksum are the first 2 bytes:
         `0x0527`
 
-        
-###EWIF v1 – Encrypted Wallet Import Format - version 1
 
-|      Secret Key Format           | Identifier |                  SecretKey or Seed                |   Checksum | 
-|----------------------------------|------------|---------------------------------------------------|-----------:| 
+### EWIF v1 – Encrypted Wallet Import Format - version 1
+
+|      Secret Key Format           | Identifier |                  SecretKey or Seed                |   Checksum |
+|----------------------------------|------------|---------------------------------------------------|-----------:|
 | **EWIF v1** (with Encryption)    |       0x01 | salt + encryptedhalf1 + encryptedhalf2 (36 Bytes) |    2 Bytes |
 
 
@@ -172,7 +172,7 @@ And is converted on base58:
 
  ** The checksum is calculated with **
     `sha256(sha256(0x02 + salt + encryptedhalf1 + encryptedhalf2)[0,2]`
-            
+
 
 #### Decryption steps:
    1. Collect encrypted private key and passphrase from user.
@@ -182,161 +182,3 @@ And is converted on base58:
    5. Convert that seed into a public key,
    6. Hash the public key, and verify that salt from the encrypted private key record matches the hash.
       If not, report that the passphrase entry was incorrect.
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
- 
-
-How is calculated the checksum:
-
- 
-
-1)      The seed is concatenated with the Private Key Format identifier (0x01)
-
-0x01f1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e4085
-
-2)      sha256(fi+seed)
-
-0xa0781ac0e97e2bfd5b8c2da2434ec13d2552d3aa11296c950e821fa55fb42f3a
-
-3)  sha256(sha256(fi+seed))
-0x052772dedaf9d2bfb6bea53f48c221b4f3fdcd0ad4bff4d76b879c0cf94d6086
-
-4)      the checksum are the first 2 bytes:
-
-0x0527
-
-# Authentication on Duniter
- 
- To be authenticated on one account on duniter, the couple Secret Key / Public Key is needed
- 
-## Introduction
- 
-DUP only deals with public keys and signatures.
-A public key is always paired with a private key, which DUP will never deal with.
-
-Today DUP manage only the algorithm ED25519
-But in the future DUP can evolve to manage multiples digital signature algorithms.
-
-So currently a public key for DUP is to be understood as an Ed25519 public key.
-Its format is a Base58 string of 43 or 44 characters, such as the following:
-
-J4c8CARmP9vAFNGtHRuzx14zvxojyRWHW2darguVqjtX 
-
-
-## Key Generation:
-### Key Generation with Password and Salt (Brain wallet)
-
-By default, the key generation of the Public Key and Secret Key is created from password and salt provided by the User.
-
-Today only this combination of this 2 algorithm are used:
-    1.  The seed is generated with the key derivation function “Scrypt“
-    2.  This seed is signed with the Algorithm “ed25519” for generate a Public key and Secret key
-
-##### Defaut value of the different Software Client:
-###### “Sakia” algorithm and parameters:
-
-
-|                                        |       N   |   R |   P | Seed length |
-| -------------------------------------- |----------:| ---:| ---:| -----------:|
-| ** light ** (Scrypt + ed25519)         |      2048 |   8 |   1 |    32 Bytes |
-| ** Secure ** (Scrypt + ed25519)        |     16384 |  32 |   2 |    32 Bytes |
-| ** Hardest ** (Scrypt + ed25519)       |     65536 |  32 |   4 |    32 Bytes |
-| ** Extreme ** (Scrypt + ed25519)       |    262144 |  64 |   8 |    32 Bytes |
-| ** Personal value **(Scrypt + ed25519) |       Any | Any | Any |    32 Bytes |
-
-###### “Cesium” algorithm and parameters:
-
-|                                        |       N   |   R |   P | Seed length |
-| -------------------------------------- |----------:| ---:| ---:| -----------:|
-| ** Default ** (Scrypt + ed25519)       |      4096 |  16 |   1 |    32 Bytes |
-
-With this, the user know only the salt, password and the public key
-The Secret key does not need to be communicate to the user.
-
-### Key generation with random Seed
-
-This technique is used for other form of authentication
-Ex:
-    - Paper wallet,
-    - Paper wallet encrypted
-    - Authenticated by file on disk,
-    - Authenticated by encrypted file on disk,
-    - …
-
-But instead of Key Generation with password and salt,
-Here the secret key need to be stored, and transmitted to the software client  
-
-For this we need to define a Secret key Prefixes Identifier for supporting different format of the secret key.
-
-## Secret Key Format:
-
-### Secret Key Prefixes Identifier:
-
-All Secret key format have 1 Byte for prefixes at the front of the Secret key to identify the type of import used
-And X bytes at the end for the checksum (if used)
-
-|      Secret Key Format           | Identifier |                  SecretKey or Seed                |   Checksum | 
-|----------------------------------|------------|---------------------------------------------------|-----------:| 
-| **WIF  v1** (without Encryption) |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes | 
-| **EWIF v1** (with Encryption)    |       0x01 | salt + encryptedhalf1 + encryptedhalf2 (36 Bytes) |    2 Bytes |
-| **Used for future**              |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes | 
-
-The output of all Secret Key Format is always converted on base58.
-
-Note: With this identifier, we can use later a different algorithm, if the ed25519 is compromised
-when DUP are able to manage multiples digital signature algorithms.
-
-
-###WIF v1 - Wallet Import Format - version 1
-
-the randomly generated Seed is used for  WIF v1 (32 bytes)
-
-|      Secret Key Format             | Identifier |                  SecretKey or Seed                |   Checksum | 
-|------------------------------------|------------|---------------------------------------------------|-----------:| 
-| **WIF  v1** (without Encryption)   |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes | 
-
-#### Example:
-For this type of Private Key Format the identifier is:
-`0x01`
-The Seed is 32 Bytes randomly generated:
-`0xf1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e4085`
-Checksum:
-`0x0527`
-All this field is concatenated (identifier + seed + checksum):
-`0x01f1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e40850527`
-And is converted on base58:
-`CEmD3ebswAVSQ1YfgDzqJ9BMNHaWotvUg3QQyYspuaPKKUr`
-
-
-
-
- 
-
- 
-
- 
-
- 
-
- 
