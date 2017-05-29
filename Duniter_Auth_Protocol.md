@@ -31,19 +31,29 @@ to avoid send a coins to the bad account. Because no control exist on the Dunite
 
 ##### Exemple :
 Public key:
+
     `J4c8CARmP9vAFNGtHRuzx14zvxojyRWHW2darguVqjtX`
+
 Public key and checksum:
+
     `J4c8CARmP9vAFNGtHRuzx14zvxojyRWHW2darguVqjtX:KAv`
 
 We have added a separator “:” to add the checksum field at the end
 
 How is calculated the checksum:
+
    1. sha256(pubkey):
+
         `0x47c7aee49dfb9bea99949d04623281d8ad6188be8f6a698b0eb5994fa44d0a67`
+
    2. sha256(sha256(pubkey))
+
         `0x04a7ad22fbe357fbf5f58b2996fe5840fa2f977b9f6aa4c62575e68f75882672`
+
    3. Base58.encode(sha256(sha256(pubkey))
+
         `KAvdGW7rpV68WDQPVN2TCrCoyvAHqMK1nSTS8y68bmB`
+
    4. We take only the 3 first characters of this value to get the checksum
         `KAv`
 
@@ -55,7 +65,9 @@ How is calculated the checksum:
 By default, the key generation of the Public Key and Secret Key is created from password and salt provided by the User.
 
 Today only this combination of this 2 algorithm are used:
+
     1. The seed is generated with the key derivation function “Scrypt“
+
     2. This seed is signed with the Algorithm “ed25519” for generate a Public key and Secret key
 
 ##### Defaut value of the different Software Client:
@@ -82,7 +94,9 @@ The Secret key does not need to be communicate to the user.
 ### Key generation with random Seed
 
 This technique is used for other form of authentication
+
 Ex:
+
     - Paper wallet,
     - Paper wallet encrypted
     - Authenticated by file on disk,
@@ -123,30 +137,46 @@ the randomly generated Seed is used for  WIF v1 (32 bytes)
 | **WIF  v1** (without Encryption)   |       0x01 | Seed of ed25519 (32 Bytes)                        |    2 Bytes |
 
 ###### Ex:
+
 For this type of Private Key Format the identifier is:
+
 `0x01`
+
 The Seed is 32 Bytes randomly generated:
+
 `0xf1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e4085`
+
 Checksum:
+
 `0x0527`
+
 All this field is concatenated (identifier + seed + checksum):
+
 `0x01f1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e40850527`
+
 And is converted on base58:
+
 `CEmD3ebswAVSQ1YfgDzqJ9BMNHaWotvUg3QQyYspuaPKKUr`
 
- #####How is calculated the checksum:
+##### How is calculated the checksum:
 
 **sha256(sha256(fi+seed))[0,2]**
 
    1. The seed is concatenated with the Private Key Format identifier (0x01)
-        `0x01f1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e`4085
-   2. sha256(fi+seed)
-        `0xa0781ac0e97e2bfd5b8c2da2434ec13d2552d3aa11296c950e821fa55fb42f3a`
-   3. sha256(sha256(fi+seed))
-        `0x052772dedaf9d2bfb6bea53f48c221b4f3fdcd0ad4bff4d76b879c0cf94d6086`
-   4. the checksum are the first 2 bytes:
-        `0x0527`
 
+        `0x01f1159316f06a2636a04d0ed4cfe9a081de4b7374e78b10cfb4fec6a2186e`
+
+   2. sha256(fi+seed)
+
+        `0xa0781ac0e97e2bfd5b8c2da2434ec13d2552d3aa11296c950e821fa55fb42f3a`
+
+   3. sha256(sha256(fi+seed))
+
+        `0x052772dedaf9d2bfb6bea53f48c221b4f3fdcd0ad4bff4d76b879c0cf94d6086`
+
+   4. the checksum are the first 2 bytes:
+
+        `0x0527`
 
 ### EWIF v1 – Encrypted Wallet Import Format - version 1
 
@@ -159,19 +189,28 @@ And is converted on base58:
 
    1. Compute the public key from the seed with ed25519 on base58 and take the first 4 bytes of SHA256(SHA256()) of it.  The name of this value is "salt".
    2. Derive a key from the passphrase using scrypt
+
         Parameters: passphrase is the passphrase itself encoded in UTF-8.
+
             take salt from the earlier step,
             `n=16384, r=8, p=8, length=64` (n, r, p are provisional and subject to consensus)
+
    3. Let's split the resulting 64 bytes in half, and call them derivedhalf1 and derivedhalf2.
    4. Do AES256 Encrypt(block = seed[0...15] xor derivedhalf1[0...15], key = derivedhalf2),
+
         The 16-byte result encryptedhalf1
+
    5. Do AES256 Encrypt(block = seed[16...31] xor derivedhalf1[16...31], key = derivedhalf2),
+
         The 16-byte result encryptedhalf2
+
    6. The encrypted private key is the Base58 concatenation of the following:
+
         `0x02 + salt + encryptedhalf1 + encryptedhalf2 + checksum`
 
- ** The checksum is calculated with **
-    `sha256(sha256(0x02 + salt + encryptedhalf1 + encryptedhalf2)[0,2]`
+**The checksum is calculated with**
+
+    sha256(sha256(0x02 + salt + encryptedhalf1 + encryptedhalf2)[0,2]
 
 
 #### Decryption steps:
